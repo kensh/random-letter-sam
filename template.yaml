@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  random-letter-sam
+
+  Sample SAM Template for random-letter-sam
+  
+Globals:
+  Function:
+    Timeout: 3
+
+
+Resources:
+  LetterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageUri: ${AWS::AccountId}.dkr.ecr.ap-northeast-1.amazonaws.com/random-letter-sam
+      Events:
+        LetterFunctionAPI:
+          Type: HttpApi
+          Properties:
+            Path: /letter
+            Method: get
+    Metadata:
+      DockerTag: nodejs12.x-v1
+      DockerContext: ./src
+      Dockerfile: Dockerfile
+
+Outputs:
+  LetterFunctionAPI:
+    Description: "API Gateway endpoint URL for stage for Letter function"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/letter"
+  LetterFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt LetterFunction.Arn
+  LetterFunctionIamRole:
+    Description: "Implicit IAM Role created for LetterFunction function"
+    Value: !GetAtt LetterFunctionRole.Arn

@@ -13,7 +13,7 @@ exports.lambdaHandler = async (event) => {
     doc.text(faker.address.secondaryAddress(), { align: 'right' });
     doc.text(faker.address.zipCode() + ' ' + faker.address.city(), { align: 'right' });
     doc.moveDown();
-    doc.text('For my Dear ' + randomName + ',');
+    doc.text('Dear ' + randomName + ',');
     doc.moveDown();
     for(let i = 0; i < 3; i++) {
         doc.text(faker.lorem.paragraph());
